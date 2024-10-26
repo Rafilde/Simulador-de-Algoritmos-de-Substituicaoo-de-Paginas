@@ -16,7 +16,6 @@ public class Main {
         int frames  = sc.nextInt();
 
         Algorithms output = new Algorithms(pages, frames);
-        output.fifo();
         System.out.println(output);
     }
 }
