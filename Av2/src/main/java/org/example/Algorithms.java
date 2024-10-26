@@ -1,3 +1,4 @@
+package org.example;
 import java.util.LinkedList;
 
 public class Algorithms {
@@ -63,3 +64,4 @@ public class Algorithms {
         return sb.toString();
     }
 }
+
