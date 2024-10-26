@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.LinkedList;
 
 public class Algorithms {
@@ -44,6 +45,14 @@ public class Algorithms {
             }
         }
         return pageFaults;
+    }
+
+    public int getPageFaultsFifo() {
+        return fifo();
+    }
+
+    public int getPageFaultsLru() {
+        return lru();
     }
 
     public String toString() {

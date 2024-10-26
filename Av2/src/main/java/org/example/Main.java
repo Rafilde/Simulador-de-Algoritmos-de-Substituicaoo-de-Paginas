@@ -1,4 +1,6 @@
 package org.example;
+
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Main {
@@ -18,5 +20,11 @@ public class Main {
 
         Algorithms output = new Algorithms(pages, frames);
         System.out.println(output);
+
+        JFrame frame = new JFrame("Gráfico de Page Faults");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.add(new BarChart(output));
+        frame.setVisible(true);
     }
 }
