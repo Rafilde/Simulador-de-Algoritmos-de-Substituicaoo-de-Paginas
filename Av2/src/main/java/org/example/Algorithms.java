@@ -11,6 +11,7 @@ public class Algorithms {
         this.frames = frames;
     }
 
+    //Lógica do algoritmo fifo
     public int fifo() {
         LinkedList<Integer> memory = new LinkedList<>();
         int pageFaults = 0;
@@ -28,6 +29,7 @@ public class Algorithms {
         return pageFaults ;
     }
 
+    // Lógica do algoritmo lru
     public int lru() {
         LinkedList<Integer> memory = new LinkedList<>();
         int pageFaults = 0;
@@ -55,6 +57,7 @@ public class Algorithms {
         return lru();
     }
 
+    //visualizar pelo terminal
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int count = 0;
