@@ -49,12 +49,57 @@ public class Algorithms {
         return pageFaults;
     }
 
+    // Lógica do algoritmo relógio
+    public int clock() {
+        LinkedList<Integer> memory = new LinkedList<>();
+        LinkedList<Integer> bits = new LinkedList<>();
+        int pageFaults = 0;
+        int bitOne = 1;
+        int bitZero = 0;
+        int pointer = 0;
+
+        for (int page : pages) {
+            if (!memory.contains(page)) {
+                if (memory.size() == frames) {
+                    while (true) {
+                        if (pointer == frames) {
+                            pointer = 0;
+                        }
+                        if (bits.get(pointer) == bitOne) {
+                            bits.set(pointer, bitZero);
+                            pointer++;
+                        } else {
+                            memory.set(pointer, page);
+                            bits.set(pointer, bitOne);
+                            pageFaults++;
+                            pointer++;
+                            break;
+                        }
+                    }
+                } else {
+                    memory.add(page);
+                    bits.add(bitOne);
+                    pageFaults++;
+                }
+            } else {
+                int index = memory.indexOf(page);
+                bits.set(index, bitOne);
+            }
+        }
+        return pageFaults;
+    }
+
+
     public int getPageFaultsFifo() {
         return fifo();
     }
 
     public int getPageFaultsLru() {
         return lru();
+    }
+
+    public int getPageFaultsClock() {
+        return clock();
     }
 
     //visualizar pelo terminal
@@ -73,6 +118,7 @@ public class Algorithms {
         sb.append("\nFrames: ").append(frames).append("\n");
         sb.append("FIFO PageFaults: ").append(fifo()).append("\n");
         sb.append("LRU PageFaults: ").append(lru()).append("\n");
+        sb.append("CLOCK PageFaults: ").append(clock()).append("\n");
         return sb.toString();
     }
 }

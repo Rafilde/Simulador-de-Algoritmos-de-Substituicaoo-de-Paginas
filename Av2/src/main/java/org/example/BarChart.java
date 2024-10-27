@@ -21,13 +21,15 @@ public class BarChart extends JPanel {
         // Definir cores
         Color fifoColor = Color.BLUE;
         Color lruColor = Color.GREEN;
+        Color clockColor = Color.RED;
 
         // Obter os resultados de page faults
         int fifoFaults = algorithms.getPageFaultsFifo();
         int lruFaults = algorithms.getPageFaultsLru();
+        int clockFaults = algorithms.getPageFaultsClock();
 
         // Calcular altura máxima
-        int maxFaults = Math.max(fifoFaults, lruFaults);
+        int maxFaults = Math.max(Math.max(fifoFaults, lruFaults), clockFaults);
         int scalingFactor = (height - 60) / maxFaults;
 
         // Desenhar barra FIFO
@@ -40,9 +42,15 @@ public class BarChart extends JPanel {
         g.setColor(lruColor);
         g.fillRect(50 + barWidth, height - lruBarHeight - 40, barWidth - 10, lruBarHeight);
 
+        // Desenhar barra Clock
+        int clockBarHeight = clockFaults * scalingFactor;
+        g.setColor(clockColor);
+        g.fillRect(50 + 2 * barWidth, height - clockBarHeight - 40, barWidth - 10, clockBarHeight);
+
         // Adicionar rótulos
         g.setColor(Color.BLACK);
         g.drawString("FIFO: " + fifoFaults + " faults", 50, height - 20);
         g.drawString("LRU: " + lruFaults + " faults", 50 + barWidth, height - 20);
+        g.drawString("Clock: " + clockFaults + " faults", 50 + 2 * barWidth, height - 20);
     }
 }
