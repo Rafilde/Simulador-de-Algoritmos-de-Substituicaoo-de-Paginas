@@ -23,7 +23,7 @@ public class Main {
 
         JFrame frame = new JFrame("Gráfico de Page Faults");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(500, 300);
         frame.add(new BarChart(output));
         frame.setVisible(true);
     }

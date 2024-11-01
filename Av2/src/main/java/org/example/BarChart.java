@@ -3,7 +3,7 @@ package org.example;
 import javax.swing.*;
 import java.awt.*;
 
-public class BarChart extends JPanel {
+class BarChart extends JPanel {
     private final Algorithms algorithms;
 
     public BarChart(Algorithms algorithms) {
@@ -16,7 +16,9 @@ public class BarChart extends JPanel {
 
         int width = getWidth();
         int height = getHeight();
-        int barWidth = width / 4;
+        int numBars = 4;
+        int barWidth = width / (numBars + 1);
+        int spacing = (width - numBars * barWidth) / 2;
 
         // Definir cores
         Color fifoColor = Color.BLUE;
@@ -27,30 +29,35 @@ public class BarChart extends JPanel {
         int fifoFaults = algorithms.getPageFaultsFifo();
         int lruFaults = algorithms.getPageFaultsLru();
         int clockFaults = algorithms.getPageFaultsClock();
+        int optimalFaults = algorithms.getPageFaultsOptimal();
 
         // Calcular altura máxima
-        int maxFaults = Math.max(Math.max(fifoFaults, lruFaults), clockFaults);
+        int maxFaults = Math.max(Math.max(fifoFaults, lruFaults), Math.max(clockFaults, optimalFaults));
         int scalingFactor = (height - 60) / maxFaults;
 
-        // Desenhar barra FIFO
+        // Desenhar barras
         int fifoBarHeight = fifoFaults * scalingFactor;
         g.setColor(fifoColor);
-        g.fillRect(50, height - fifoBarHeight - 40, barWidth - 10, fifoBarHeight);
+        g.fillRect(spacing, height - fifoBarHeight - 40, barWidth - 10, fifoBarHeight);
 
-        // Desenhar barra LRU
         int lruBarHeight = lruFaults * scalingFactor;
         g.setColor(lruColor);
-        g.fillRect(50 + barWidth, height - lruBarHeight - 40, barWidth - 10, lruBarHeight);
+        g.fillRect(spacing + barWidth, height - lruBarHeight - 40, barWidth - 10, lruBarHeight);
 
-        // Desenhar barra Clock
         int clockBarHeight = clockFaults * scalingFactor;
         g.setColor(clockColor);
-        g.fillRect(50 + 2 * barWidth, height - clockBarHeight - 40, barWidth - 10, clockBarHeight);
+        g.fillRect(spacing + 2 * barWidth, height - clockBarHeight - 40, barWidth - 10, clockBarHeight);
+
+        int optimalBarHeight = optimalFaults * scalingFactor;
+        g.setColor(new Color(0x00FFFF));
+        g.fillRect(spacing + 3 * barWidth, height - optimalBarHeight - 40, barWidth - 10, optimalBarHeight);
 
         // Adicionar rótulos
         g.setColor(Color.BLACK);
-        g.drawString("FIFO: " + fifoFaults + " faults", 50, height - 20);
-        g.drawString("LRU: " + lruFaults + " faults", 50 + barWidth, height - 20);
-        g.drawString("Clock: " + clockFaults + " faults", 50 + 2 * barWidth, height - 20);
+        g.drawString("FIFO: " + fifoFaults + " faults", spacing, height - 20);
+        g.drawString("LRU: " + lruFaults + " faults", spacing + barWidth, height - 20);
+        g.drawString("Clock: " + clockFaults + " faults", spacing + 2 * barWidth, height - 20);
+        g.drawString("Optimal: " + optimalFaults + " faults", spacing + 3 * barWidth, height - 20);
     }
+
 }

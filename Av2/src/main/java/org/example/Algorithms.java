@@ -89,6 +89,51 @@ public class Algorithms {
         return pageFaults;
     }
 
+    public int optimal() {
+        int[] fr = new int[frames];
+        int hit = 0;
+        int index = 0;
+        for (int i = 0; i < pages.length; i++) {
+            if (search(pages[i], fr)) {
+                hit++;
+                continue;
+            }
+            if (index < frames)
+                fr[index++] = pages[i];
+            else {
+                int j = predict(pages, fr, pages.length, i + 1);
+                fr[j] = pages[i];
+            }
+        }
+        return pages.length - hit;
+    }
+
+    static boolean search(int key, int[] fr) {
+        for (int i = 0; i < fr.length; i++)
+            if (fr[i] == key)
+                return true;
+        return false;
+    }
+
+    static int predict(int pg[], int[] fr, int pn, int index) {
+        int res = -1, farthest = index;
+        for (int i = 0; i < fr.length; i++) {
+            int j;
+            for (j = index; j < pn; j++) {
+                if (fr[i] == pg[j]) {
+                    if (j > farthest) {
+                        farthest = j;
+                        res = i;
+                    }
+                    break;
+                }
+            }
+            if (j == pn)
+                return i;
+        }
+        return (res == -1) ? 0 : res;
+    }
+
 
     public int getPageFaultsFifo() {
         return fifo();
@@ -100,6 +145,10 @@ public class Algorithms {
 
     public int getPageFaultsClock() {
         return clock();
+    }
+
+    public int getPageFaultsOptimal() {
+        return optimal();
     }
 
     //visualizar pelo terminal
@@ -119,7 +168,9 @@ public class Algorithms {
         sb.append("FIFO PageFaults: ").append(fifo()).append("\n");
         sb.append("LRU PageFaults: ").append(lru()).append("\n");
         sb.append("CLOCK PageFaults: ").append(clock()).append("\n");
+        sb.append("Optimal PageFaults: ").append(optimal()).append("\n");
         return sb.toString();
     }
 }
+
 
